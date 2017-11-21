@@ -1,41 +1,49 @@
 $(document).ready(function(){
 
-var slot1, slot2, slot3;
-var storedMoney;
-var arr = ["apples","oranges","cherries","kiwi","pineapples"];
+let slot1, slot2, slot3;
+let storedMoney;
+let arr = ["apples","oranges","cherries","kiwi","pineapples"];
 
 $("#bet1").on("click",function(){
 
-	var betAmount = $("#betAmount").val();
+	let betAmount = $("#betAmount").val();
 	
-	if(betAmount != "" && betAmount > 0){
+	if((betAmount !== "") && (betAmount > 0)){
+	
 	console.log(betAmount)
 	storedMoney = parseFloat(betAmount);
 
-	$("p").text("YOUR BANK: "+storedMoney);
+	$("#bank").text("YOUR BANK: $"+storedMoney);
 	$("#betAmount").val("")
 	slot1 = arr[Math.floor(Math.random()*arr.length)];
 	slot2 = arr[Math.floor(Math.random()*arr.length)];
 	slot3 = arr[Math.floor(Math.random()*arr.length)];
 	
-	console.log(slot1,slot2,slot3);
+	$("#slotResults").html(slot1+"<br>"+slot2+"<br>"+slot3);
+
 	if((slot1 == slot2) && (slot2 == slot3)){
-		console.log("YOU WIN!");
+		$("#message").text("YOU WIN! YOUR MONEY GETS MULTIPLIED BY 10!");
+		betAmount*=10;
+		storedMoney+=betAmount;
 	}
 	else if((slot1 == slot2) || (slot2 == slot3) || (slot1 == slot3)){
-		console.log("YOU...KINDA WON? HERE'S 2x YOUR BET.")
+		$("#message").text("YOU...KINDA WON? HERE'S AN ADDITIONAL 2x YOUR BET.")
 		betAmount = betAmount*2;
 		storedMoney+=betAmount;
-		console.log("Stored Money: "+storedMoney)
+		$("#bank").text("Stored Money: $"+storedMoney)
 	}
 	else{
-		console.log("YOU LOSE! SORRY, BUDDY.");
+		$("#message").text("YOU LOSE! SORRY, BUDDY.");
 		storedMoney-=betAmount;
-		console.log("Stored Money: "+storedMoney)
+		$("#bank").text("Stored Money: $"+storedMoney)
+	};
 	}
-	}
+
+	// condition for an empty input field 
 	else{
-		$("p").text("Please enter in your bet amount!").css("color","red").css("font-weight","bold")
+		$("#message").text("Please enter in your bet amount!")
+		$("#message").css("color","red")
+		$("#message").css("font-weight","bold")
 		$("#betAmount").val("")
 	}
 
